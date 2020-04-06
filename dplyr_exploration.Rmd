@@ -7,3 +7,15 @@ output: github_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+```{r}
+library(tidyverse)
+```
+
+#Load in dataset
+```{r}
+coronavirus <- read_csv('https://raw.githubusercontent.com/RamiKrispin/coronavirus-csv/master/coronavirus_dataset.csv', col_types = cols(Province.State = col_character()))
+coronavirus
+View(coronavirus)
+head(coronavirus)
+```
+
