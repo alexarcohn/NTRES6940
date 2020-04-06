@@ -17,5 +17,15 @@ coronavirus <- read_csv('https://raw.githubusercontent.com/RamiKrispin/coronavir
 coronavirus
 View(coronavirus)
 head(coronavirus)
+tail(coronavirus)
+names(coronavirus)
+dim(coronavirus)
+summary(coronavirus)
+
+install.packages('skimr')
+library(skimr)
+skim(coronavirus)
+
+coronavirus$cases
 ```
 
