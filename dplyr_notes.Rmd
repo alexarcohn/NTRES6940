@@ -15,14 +15,14 @@ library(tidyverse)
 ```{r}
 coronavirus <- read_csv('https://raw.githubusercontent.com/RamiKrispin/coronavirus-csv/master/coronavirus_dataset.csv', col_types = cols(Province.State = col_character()))
 coronavirus
-View(coronavirus)
+# View(coronavirus)
 head(coronavirus)
 tail(coronavirus)
 names(coronavirus)
 dim(coronavirus)
 summary(coronavirus)
 
-install.packages('skimr')
+# install.packages('skimr')
 library(skimr)
 skim(coronavirus)
 
