@@ -28,4 +28,14 @@ skim(coronavirus)
 
 coronavirus$cases
 ```
+```{r}
+filter(coronavirus, cases > 0)
+filter(coronavirus, Country.Region == "US")
+coronavirus_us <- filter(coronavirus, Country.Region == "US")
+
+filter(coronavirus, Country.Region == "US" | Country.Region == "Canada")
+
+US_deaths <- filter(coronavirus, Country.Region == "US", type == "death")
+sum(US_deaths$cases)
+```
 
