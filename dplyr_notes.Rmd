@@ -1,0 +1,45 @@
+---
+title: "dplyr notes"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+```
+
+#Load in dataset
+```{r}
+coronavirus <- read_csv('https://raw.githubusercontent.com/RamiKrispin/coronavirus-csv/master/coronavirus_dataset.csv', col_types = cols(Province.State = col_character()))
+coronavirus
+View(coronavirus)
+head(coronavirus)
+tail(coronavirus)
+names(coronavirus)
+dim(coronavirus)
+summary(coronavirus)
+
+install.packages('skimr')
+library(skimr)
+skim(coronavirus)
+
+coronavirus$cases
+```
+```{r}
+filter(coronavirus, cases > 0)
+filter(coronavirus, Country.Region == "US")
+coronavirus_us <- filter(coronavirus, Country.Region == "US")
+
+filter(coronavirus, Country.Region == "US" | Country.Region == "Canada")
+
+US_deaths <- filter(coronavirus, Country.Region == "US", type == "death")
+sum(US_deaths$cases)
+```
+
+```{r}
+select(coronavirus, -Lat, -Long)
+```
+
