@@ -11,7 +11,9 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 ```
 
-#Load in dataset
+## Exploration of the Coronavirus dataset
+
+First, we'll load and examine the data
 ```{r}
 coronavirus <- read_csv('https://raw.githubusercontent.com/RamiKrispin/coronavirus-csv/master/coronavirus_dataset.csv', col_types = cols(Province.State = col_character()))
 coronavirus
@@ -26,8 +28,11 @@ summary(coronavirus)
 library(skimr)
 skim(coronavirus)
 
-coronavirus$cases
+# coronavirus$cases
+head(coronavirus$cases)
 ```
+
+Now let's explore the dplyr functions
 ```{r}
 filter(coronavirus, cases > 0)
 filter(coronavirus, Country.Region == "US")
@@ -37,9 +42,60 @@ filter(coronavirus, Country.Region == "US" | Country.Region == "Canada")
 
 US_deaths <- filter(coronavirus, Country.Region == "US", type == "death")
 sum(US_deaths$cases)
+
+select(coronavirus, -Lat, -Long)
 ```
 
+Now to dplyr exploration part 2
 ```{r}
-select(coronavirus, -Lat, -Long)
+coronavirus_us <- filter(coronavirus, Country.Region == "US")
+coronavirus_us2 <- select(coronavirus_us, - Lat, -Long, -Province.State)
+
+coronavirus %>% filter (Country.Region == "US")
+coronavirus_us %>% select(-Lat, -Long, -Province.State)
+
+coronavirus %>% head(3)
+
+coronavirus_us <- coronavirus %>% 
+  filter(Country.Region == "US") %>% 
+  select(-Lat, -Long, -Province.State)
+
+coronavirus_us <- coronavirus[coronavirus$Country.Region == "US", colnames(coronavirus) %in% c("Lat", "Long", "Province.State")]
+
+
+```
+
+Now let's look at the dataset in wide format
+```{r}
+coronavirus_ttd <- coronavirus %>% 
+  select(country = Country.Region, type, cases) %>%
+  group_by(country, type) %>%
+  summarise(total_cases = sum(cases)) %>%
+  pivot_wider(names_from = type,
+              values_from = total_cases) %>%
+  arrange(-confirmed)
+
+coronavirus_ttd
+
+coronavirus_ttd %>% 
+  mutate(deathrate = round(death / confirmed, 2))
+
+coronavirus_ttd %>% 
+  mutate(undetermined = (confirmed - death - recovered) / confirmed) %>% 
+  filter(confirmed > 20000) %>% 
+  arrange(undetermined)
+
+coronavirus_ttd %>% 
+  filter(death > 3000) %>% 
+  arrange(-death)
+
+coronavirus %>% 
+  filter(type == "death") %>% 
+  arrange(-cases)
+
+coronavirus %>%
+  filter(Country.Region == "Denmark", cases > 0) %>% 
+  arrange(date)
+
 ```
 
